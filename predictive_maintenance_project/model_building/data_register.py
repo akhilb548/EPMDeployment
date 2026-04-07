@@ -19,9 +19,8 @@ except RepositoryNotFoundError:
     print(f"Repository '{repo_id}' created.")
 
 # Step 2: Upload raw dataset
-api.upload_file(
-    path_or_fileobj="engine_data.csv",
-    path_in_repo="engine_data.csv",
+api.upload_folder(
+    folder_path="predictive_maintenance_project/data",
     repo_id=repo_id,
     repo_type=repo_type,
 )
