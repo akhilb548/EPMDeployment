@@ -37,23 +37,23 @@ for feat in FEATURES:
 
 # Stratified 80/20 train-test split
 X, y = df[FEATURES], df[TARGET].astype(int)
-X_train, X_test, y_train, y_test = train_test_split(
+Xtrain, Xtest, ytrain, ytest = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-train_df = X_train.copy(); train_df[TARGET] = y_train.values
-test_df  = X_test.copy();  test_df[TARGET]  = y_test.values
-
-train_df.to_csv("train.csv", index=False)
-test_df.to_csv("test.csv", index=False)
-print(f"Train: {len(train_df):,} rows | Test: {len(test_df):,} rows")
+Xtrain.to_csv("Xtrain.csv", index=False)
+Xtest.to_csv("Xtest.csv", index=False)
+ytrain.to_csv("ytrain.csv", index=False)
+ytest.to_csv("ytest.csv", index=False)
+print(f"Train: {len(Xtrain):,} rows | Test: {len(Xtest):,} rows")
 
 # Upload splits to Hugging Face
-for local_file, hf_name in [("train.csv", "train.csv"), ("test.csv", "test.csv")]:
+files = ["Xtrain.csv", "Xtest.csv", "ytrain.csv", "ytest.csv"]
+for file_path in files:
     api.upload_file(
-        path_or_fileobj=local_file,
-        path_in_repo=hf_name,
+        path_or_fileobj=file_path,
+        path_in_repo=file_path.split("/")[-1],
         repo_id=DATASET_REPO,
         repo_type="dataset",
     )
-    print(f"Uploaded {hf_name} to Hugging Face.")
+    print(f"Uploaded {file_path} to Hugging Face.")

@@ -25,16 +25,16 @@ MODEL_REPO   = "indianakhil/engine-predictive-maintenance-model"
 
 api = HfApi(token=os.getenv("HF_TOKEN"))
 
-# Load train/test from Hugging Face
-tr_path = hf_hub_download(repo_id=DATASET_REPO, filename='train.csv',
-                           repo_type='dataset', token=os.getenv("HF_TOKEN"))
-te_path = hf_hub_download(repo_id=DATASET_REPO, filename='test.csv',
-                           repo_type='dataset', token=os.getenv("HF_TOKEN"))
-train_data = pd.read_csv(tr_path)
-test_data  = pd.read_csv(te_path)
+# Load train/test splits from Hugging Face
+Xtrain_path = f"hf://datasets/{DATASET_REPO}/Xtrain.csv"
+Xtest_path  = f"hf://datasets/{DATASET_REPO}/Xtest.csv"
+ytrain_path = f"hf://datasets/{DATASET_REPO}/ytrain.csv"
+ytest_path  = f"hf://datasets/{DATASET_REPO}/ytest.csv"
 
-X_train, y_train = train_data[FEATURES], train_data[TARGET]
-X_test,  y_test  = test_data[FEATURES],  test_data[TARGET]
+X_train = pd.read_csv(Xtrain_path)
+X_test  = pd.read_csv(Xtest_path)
+y_train = pd.read_csv(ytrain_path)
+y_test  = pd.read_csv(ytest_path)
 
 # Define models and hyperparameter grids
 models_params = {
